@@ -785,31 +785,61 @@
 </div>
 
 <script>
-  (function() {
+(function() {
     const canvas = document.getElementById('scratchCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
 
-    // Draw silver scratch surface
-    ctx.fillStyle = '#C0C0C0';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Canvas ko har baar fresh draw karne ka function
+    function initScratchCard() {
+        ctx.globalCompositeOperation = 'source-over';
+        
+        // Draw silver scratch surface
+        ctx.fillStyle = '#C0C0C0';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Add pattern text on top of scratch surface
-    ctx.fillStyle = '#808080';
-    ctx.font = 'bold 16px Poppins, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('✨ Scratch Here ✨', canvas.width / 2, canvas.height / 2 + 5);
+        // Add pattern text on top of scratch surface
+        ctx.fillStyle = '#808080';
+        ctx.font = 'bold 16px Poppins, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('✨ Scratch Here ✨', canvas.width / 2, canvas.height / 2 + 5);
+    }
 
     function getPos(e) {
-      const rect = canvas.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      return {
-        x: clientX - rect.left,
-        y: clientY - rect.top
-      };
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+        };
     }
+
+    function scratch(e) {
+        if (!isDrawing) return;
+        const pos = getPos(e);
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 18, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Events
+    canvas.addEventListener('mousedown', () => isDrawing = true);
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mousemove', scratch);
+
+    canvas.addEventListener('touchstart', () => isDrawing = true);
+    canvas.addEventListener('touchend', () => isDrawing = false);
+    canvas.addEventListener('touchmove', scratch);
+
+    // Initial draw & auto-reset on page load/refresh
+    initScratchCard();
+    window.addEventListener('load', initScratchCard);
+    window.addEventListener('pageshow', initScratchCard);
+})();
+</script>
 
     function scratch(e) {
       if (!isDrawing) return;

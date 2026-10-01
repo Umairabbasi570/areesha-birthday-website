@@ -564,161 +564,18 @@
       }
     }
   </script>
-  <!-- Canvas Confetti Library for Fireworks -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<!-- Interactive Cake Blowing Section -->
-<style>
-  .cake-wrapper {
-    text-align: center;
-    margin: 40px auto;
-    font-family: 'Poppins', sans-serif;
-  }
-
-  .cake-instructions {
-    color: #ff1493;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-
-  .cake-container {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-    cursor: pointer;
-  }
-
-  /* Cake Base Styling */
-  .cake-body {
-    width: 180px;
-    height: 90px;
-    background: #ffb6c1;
-    border-radius: 10px 10px 0 0;
-    position: absolute;
-    bottom: 0;
-    left: 10px;
-    box-shadow: inset 0 -15px 0 #ff69b4, 0 8px 15px rgba(0,0,0,0.1);
-  }
-
-  .cake-top-icing {
-    width: 180px;
-    height: 25px;
-    background: #ffffff;
-    border-radius: 10px 10px 15px 15px;
-    position: absolute;
-    bottom: 75px;
-    left: 10px;
-  }
-
-  /* Candles Styling */
-  .candle {
-    width: 12px;
-    height: 45px;
-    background: repeating-linear-gradient(45deg, #ffd700, #ffd700 5px, #ff4500 5px, #ff4500 10px);
-    position: absolute;
-    bottom: 100px;
-    border-radius: 3px;
-  }
-
-  .candle-1 { left: 55px; }
-  .candle-2 { left: 94px; }
-  .candle-3 { left: 133px; }
-
-  /* Flame Animation */
-  .flame {
-    width: 14px;
-    height: 20px;
-    background: #ff8c00;
-    border-radius: 50% 50% 20% 20%;
-    position: absolute;
-    top: -18px;
-    left: -1px;
-    box-shadow: 0 0 10px #ff8c00, 0 0 20px #ffd700;
-    animation: flicker 0.6s infinite alternate;
-  }
-
-  @keyframes flicker {
-    0% { transform: scale(1) rotate(-2deg); opacity: 1; }
-    100% { transform: scale(1.15) rotate(2deg); opacity: 0.9; }
-  }
-
-  /* Blown Out Smoke */
-  .flame.out {
-    display: none;
-  }
-
-  .smoke {
-    display: none;
-    width: 8px;
-    height: 8px;
-    background: rgba(150, 150, 150, 0.6);
-    border-radius: 50%;
-    position: absolute;
-    top: -15px;
-    left: 2px;
-    animation: rise 1.5s forwards;
-  }
-
-  @keyframes rise {
-    0% { transform: translateY(0) scale(1); opacity: 0.8; }
-    100% { transform: translateY(-30px) scale(2.5); opacity: 0; }
-  }
-
-  .blow-btn {
-    background: #ff69b4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 25px;
-    margin-top: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(255,105,180,0.4);
-    transition: transform 0.2s;
-  }
-
-  .blow-btn:hover {
-    transform: scale(1.05);
-  }
-</style>
-
-<div class="cake-wrapper">
-  <div class="cake-instructions" id="cakeStatus">
-    🎂 Blow into your Mic or Tap the Cake to blow out candles! 🕯️
-  </div>
-
-  <div class="cake-container" onclick="blowOutCandles()">
-    <div class="cake-body"></div>
-    <div class="cake-top-icing"></div>
-
-    <!-- Candle 1 -->
-    <div class="candle candle-1">
-      <div class="flame" id="flame1"></div>
-      <div class="smoke" id="smoke1"></div>
-    </div>
-    <!-- Candle 2 -->
-    <div class="candle candle-2">
-      <div class="flame" id="flame2"></div>
-      <div class="smoke" id="smoke2"></div>
-    </div>
-    <!-- Candle 3 -->
-    <div class="candle candle-3">
-      <div class="flame" id="flame3"></div>
-      <div class="smoke" id="smoke3"></div>
-    </div>
-  </div>
-
-  <button class="blow-btn" onclick="startMicDetection()">🎤 Enable Mic to Blow</button>
-</div>
-
-<script>
+  <script>
   let candlesBlown = false;
+  
+  // Audio element for Birthday Tune
+  const bdayAudio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73220.mp3?filename=happy-birthday-155461.mp3');
 
   function blowOutCandles() {
     if (candlesBlown) return;
     candlesBlown = true;
+
+    // Play Birthday Music
+    bdayAudio.play().catch(e => console.log("Audio play error: ", e));
 
     // Hide flames & show smoke
     for (let i = 1; i <= 3; i++) {
@@ -736,7 +593,6 @@
         origin: { y: 0.6 }
       });
       
-      // Repeat burst
       setTimeout(() => {
         confetti({ particleCount: 80, angle: 60, spread: 55, origin: { x: 0 } });
         confetti({ particleCount: 80, angle: 120, spread: 55, origin: { x: 1 } });
@@ -770,10 +626,9 @@
 
         const average = values / array.length;
 
-        // Threshold for blow sound detection
         if (average > 45 && !candlesBlown) {
           blowOutCandles();
-          stream.getTracks().forEach(track => track.stop()); // Stop mic
+          stream.getTracks().forEach(track => track.stop());
         }
       };
       alert("Mic activated! Now blow into your microphone 💨");

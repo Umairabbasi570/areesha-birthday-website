@@ -783,8 +783,246 @@
     <canvas id="scratchCanvas" class="scratch-canvas" width="300" height="160"></canvas>
   </div>
 </div>
+<!-- Secret Lock Box Section -->
+<div class="lockbox-container">
+    <div class="lockbox-card">
+        <div class="lock-icon">🔒</div>
+        <h2>Secret Box Just For You! 🎁</h2>
+        <p>Areesha, enter the secret code to unlock your special surprise:</p>
+        
+        <div class="input-group">
+            <input type="password" id="secretPass" placeholder="Enter secret code..." onkeypress="handleKeyPress(event)">
+            <button onclick="checkPassword()">Unlock 🔑</button>
+        </div>
+        <p id="errorMessage" class="error-msg"></p>
+    </div>
+</div>
+
+<!-- Surprise Modal Popup -->
+<div id="surpriseModal" class="modal-overlay">
+    <div class="modal-card">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div class="kiss-emoji">💋✨</div>
+        <h1 class="kiss-text">ummmmmmaaaaaaaahhhhhhhh💋</h1>
+        <p class="birthday-question">How's the special girl feeling on her Birthday today? 🎂🎉</p>
+        <p class="sub-text">Hope your day is filled with endless love, sweet surprises, and all the happiness in the world! 💖</p>
+        <button class="modal-btn" onclick="closeModal()">Love You! ❤️</button>
+    </div>
+</div>
+
+<style>
+/* Lock Box Styling */
+.lockbox-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.lockbox-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #ff4d6d;
+    border-radius: 20px;
+    padding: 30px 20px;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(255, 77, 109, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.lock-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+    animation: pulse 1.5s infinite alternate;
+}
+
+.lockbox-card h2 {
+    color: #c9184a;
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.lockbox-card p {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.input-group input {
+    padding: 12px 15px;
+    border: 2px solid #ffb3c1;
+    border-radius: 12px;
+    outline: none;
+    font-size: 15px;
+    width: 60%;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #ff4d6d;
+    box-shadow: 0 0 8px rgba(255, 77, 109, 0.4);
+}
+
+.input-group button {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #ff4d6d, #ff758f);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.input-group button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #c9184a, #ff4d6d);
+}
+
+.error-msg {
+    color: #d90429;
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 18px;
+    font-weight: bold;
+}
+
+/* Modal Popup Styling */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.modal-card {
+    background: #fff0f5;
+    border: 3px solid #ff4d6d;
+    border-radius: 25px;
+    padding: 35px 25px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 28px;
+    color: #888;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.close-btn:hover {
+    color: #ff4d6d;
+}
+
+.kiss-emoji {
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+.kiss-text {
+    color: #ff4d6d;
+    font-size: 22px;
+    word-wrap: break-word;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.birthday-question {
+    font-size: 18px;
+    color: #800f2f;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.sub-text {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.modal-btn {
+    padding: 12px 30px;
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+}
+
+.modal-btn:hover {
+    background: #c9184a;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes popUp {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+</style>
 
 <script>
+// Secret Password
+const SECRET_CODE = "areesha"; 
+
+function checkPassword() {
+    const userPassword = document.getElementById("secretPass").value.trim();
+    const errorMsg = document.getElementById("errorMessage");
+
+    if (userPassword.toLowerCase() === SECRET_CODE.toLowerCase()) {
+        errorMsg.innerText = "";
+        document.getElementById("surpriseModal").style.display = "flex";
+    } else {
+        errorMsg.innerText = "Wrong secret code! Try again 😉";
+    }
+}
+
+function handleKeyPress(event) {
+    if (event.key === "Enter") {
+        checkPassword();
+    }
+}
+
+function closeModal() {
+    document.getElementById("surpriseModal").style.display = "none";
+}
 (function() {
     const canvas = document.getElementById('scratchCanvas');
     if (!canvas) return;

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Areesha! ❤️</title>
+
+  <!-- Confetti Animation Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <!-- CSS Design -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff0f3;
+      color: #333;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+      color: white;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 2.3rem;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      background: white;
+      color: #ff758c;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.2s, background-color 0.2s;
+      margin-top: 15px;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background-color: #fff0f3;
+    }
+
+    .section-title {
+      color: #ff4b5c;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    /* GALLERY & LETTER */
+    .gallery-section, .letter-section, .quiz-section, .cake-section {
+      padding: 40px 20px;
+    }
+
+    .gallery {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      max-width: 260px;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .card p {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .letter-box {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(255, 117, 140, 0.15);
+      line-height: 1.8;
+      font-size: 1.05rem;
+      text-align: left;
+    }
+
+    /* VIRTUAL CAKE STYLES */
+    .cake-box {
+      background: #ffffff;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(255, 117, 140, 0.15);
+    }
+
+    .cake {
+      width: 150px;
+      height: 100px;
+      background: #ffb6c1;
+      border-radius: 10px 10px 0 0;
+      margin: 40px auto 10px;
+      position: relative;
+      box-shadow: inset 0 10px 0 #ff69b4;
+    }
+
+    .cake::before {
+      content: '';
+      position: absolute;
+      width: 170px;
+      height: 15px;
+      background: #ffffff;
+      bottom: -15px;
+      left: -10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .candle {
+      width: 12px;
+      height: 35px;
+      background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ff4b5c 5px, #ff4b5c 100px);
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .flame {
+      width: 14px;
+      height: 20px;
+      background: orange;
+      border-radius: 50% 50% 20% 20%;
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 10px gold;
+      animation: flicker 0.6s infinite alternate;
+    }
+
+    .flame.off {
+      display: none;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1); }
+      100% { transform: translateX(-50%) scale(1.15); }
+    }
+
+    /* QUIZ STYLES */
+    .quiz-box {
+      background: #ffffff;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(255, 117, 140, 0.15);
+      text-align: left;
+    }
+
+    .quiz-q {
+      margin-bottom: 20px;
+    }
+
+    .quiz-q h4 {
+      margin-bottom: 10px;
+      color: #ff4b5c;
+    }
+
+    .quiz-opt {
+      display: block;
+      width: 100%;
+      padding: 10px 15px;
+      margin: 6px 0;
+      background: #fff0f3;
+      border: 1px solid #ff758c;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+
+    .quiz-opt:hover {
+      background: #ffe0e6;
+    }
+
+    /* POPUP CARD MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      backdrop-filter: blur(5px);
+    }
+
+    .greeting-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 650px;
+      border-radius: 25px;
+      box-shadow: 0 15px 35px rgba(255, 117, 140, 0.3);
+      padding: 30px 20px;
+      position: relative;
+      overflow: hidden;
+      animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes smoothPopIn {
+      0% { transform: scale(0.6) translateY(50px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .background-heart {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18rem;
+      color: rgba(255, 75, 92, 0.08);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-heart-top {
+      font-size: 2.8rem;
+      margin-bottom: 5px;
+      color: #ff4b5c;
+      display: inline-block;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    .card-pages {
+      display: flex;
+      gap: 20px;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .page {
+      flex: 1;
+      background: rgba(255, 245, 247, 0.9);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1.5px dashed #ff758c;
+    }
+
+    .page h3 {
+      margin-top: 0;
+      color: #ff4b5c;
+      font-size: 1.15rem;
+      border-bottom: 2px solid #ff758c;
+      padding-bottom: 6px;
+    }
+
+    .page p {
+      font-size: 0.93rem;
+      line-height: 1.7;
+      color: #444;
+      margin: 0;
+    }
+
+    .close-btn {
+      margin-top: 25px;
+      padding: 12px 35px;
+      background: linear-gradient(135deg, #ff758c 0%, #ff4b5c 100%);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* FLOATING PINK TEDDY BEARS */
+    .teddy {
+      position: fixed;
+      font-size: 3rem;
+      z-index: 9999;
+      pointer-events: none;
+      animation: floatAround 5s linear forwards;
+    }
+
+    @keyframes floatAround {
+      0% { transform: translate(0, 100vh) rotate(0deg); opacity: 1; }
+      50% { transform: translate(25vw, 50vh) rotate(180deg); }
+      100% { transform: translate(-10vw, -10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* FLOATING HEARTS ANIMATION */
+    .floating-heart {
+      position: fixed;
+      font-size: 3rem;
+      z-index: 9999;
+      pointer-events: none;
+      animation: heartFly 4s ease-in-out forwards;
+    }
+
+    @keyframes heartFly {
+      0% {
+        bottom: -50px;
+        opacity: 1;
+        transform: scale(0.6) rotate(0deg);
+      }
+      50% {
+        opacity: 0.9;
+        transform: scale(1.2) rotate(180deg);
+      }
+      100% {
+        bottom: 105vh;
+        opacity: 0;
+        transform: scale(0.8) rotate(360deg);
+      }
+    }
+
+    .footer-text {
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    @media (max-width: 600px) {
+      .card-pages { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Audio Element -->
+  <audio id="fireworksAudio" src="fireworks.mp3"></audio>
+
+  <!-- Hero Header -->
+  <header class="hero">
+    <h1>Happy Birthday My Love, Areesha! 🎂✨</h1>
+    <p>Areesha, you bring so much warmth and happiness into my life. 😂❤️</p>
+    <button class="btn" onclick="celebrate()">Click For Surprise! 🎉</button>
+  </header>
+
+  <!-- Virtual Cake Section -->
+  <section class="cake-section">
+    <h2 class="section-title">Blow The Candle, Areesha! 🕯️✨</h2>
+    <p style="color: #666;">Click on the candle flame to blow it out and make a wish!</p>
+    <div class="cake-box">
+      <div class="cake">
+        <div class="candle" onclick="blowCandle()">
+          <div class="flame" id="candleFlame"></div>
+        </div>
+      </div>
+      <button class="btn" style="margin-top: 30px;" onclick="blowCandle()">Blow Candle 🎂</button>
+    </div>
+  </section>
+
+  <!-- Photo Gallery Section -->
+  <section class="gallery-section">
+    <h2 class="section-title">Moments That Stole My Heart ✨</h2>
+    <p style="color: #666; margin-top: -10px;">The most beautiful face in my world, Areesha ❤️</p>
+    
+    <div class="gallery">
+      <div class="card">
+        <img src="images/areesha1.jpg" alt="Areesha Portrait">
+        <p>The smile that lights up my entire world 😍</p>
+      </div>
+
+      <div class="card">
+        <img src="images/areesha2.jpg" alt="Areesha Smile">
+        <p>Gazing at the prettiest girl ever ✨</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Love Quiz -->
+  <section class="quiz-section">
+    <h2 class="section-title">bacha in sb question py apny click krna,warna mar khayn gi😂❤</h2>
+    <div class="quiz-box">
+      
+      <!-- Question 1 -->
+      <div class="quiz-q">
+        <h4>1. Mera favorite nickname aapke liye kya hai?</h4>
+        <button class="quiz-opt" onclick="quizAnswer('Correct! Aap hi to ho meri jaan mera bacha ho ❤️')">A) Mera bacha ya My Love</button>
+        <button class="quiz-opt" onclick="quizAnswer('Aww, hamesha cute nickname hi favorite hota hai! 💕')">B) Cutie Pie</button>
+        <button class="quiz-opt" onclick="quizAnswer('Bilkul, meri princess! ✨')">C) Princess</button>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="quiz-q">
+        <h4>2. Meri kon si adat apko sabse achi lagti hai?</h4>
+        <button class="quiz-opt" onclick="quizAnswer('Hamesha aapko khush rakhna hi mera maksad hai! 🥰')">A) Apka khayal rakhna aur care karna</button>
+        <button class="quiz-opt" onclick="quizAnswer('Aapki smile dekh kar hi to meri baatein shuru hoti hain! 😂❤')">B) Apko hamesha hasana aur pyaari baatein karna</button>
+        <button class="quiz-opt" onclick="quizAnswer('Har pal aapka sath dena! 🤝❤️')">C) Apke har decision mein support karna</button>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="quiz-q">
+        <h4>3. Meri konsi adat apko ziada achi nahi lagti?</h4>
+        <button class="quiz-opt" onclick="quizAnswer('Aww, aage se ziada late reply nahi karunga, promise! 🙈')">A) Kabhi kabhi late reply karna</button>
+        <button class="quiz-opt" onclick="quizAnswer('Thoda sa ziddi hoon, par sirf aapke mamlay mein! 😜')">B) Ziada ziddi ho jana</button>
+        <button class="quiz-opt" onclick="quizAnswer('Aapki fikr mein ziada sawal poochna! ❤️')">C) Extra care mein har waqt poochna</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Heartfelt Letter -->
+  <section class="letter-section">
+    <h2 class="section-title">A Special Message For You bacha❤️💌</h2>
+    <div class="letter-box">
+      <p>My Love My Everything,</p>
+      <p>On your special day, I want to thank you for being the most amazing person in my life. You bring so much joy, love, and light wherever you go...</p>
+      <p>Wishing you the happiest birthday filled with endless laughter and love, my love❤️</p>
+      <p style="text-align: right; margin-top: 20px;">Always Yours,<br><strong>[Apka Apna Marii😜]</strong></p>
+    </div>
+  </section>
+
+  <div class="footer-text">
+    Made by Marii 😜❤️ This is just for Areesha❤️.
+  </div>
+
+  <!-- POPUP CARD MODAL -->
+  <div class="modal-overlay" id="cardModal">
+    <div class="greeting-card">
+      <div class="background-heart">❤️</div>
+      <div class="card-content">
+        <div class="card-heart-top">❤️</div>
+        <h2 style="margin: 0; color: #ff4b5c; font-size: 1.8rem;">Happy Birthday, Areesha! ✨</h2>
+
+        <div class="card-pages">
+          <div class="page">
+            <h3>You Are So Precious 💖</h3>
+            <p>Areesha, having you in my life is the sweetest gift. Your gentle heart, soft smile, and innocent laughter make my everyday so bright and magical. Thank you for being my happiest thought!</p>
+          </div>
+
+          <div class="page">
+            <h3>My Prayers For You 🤲✨</h3>
+            <p>May Allah fill your life with infinite happiness, success, and good health. May every dream of yours come true and may your heart always be filled with peace and joy. Stay blessed forever!</p>
+          </div>
+        </div>
+
+        <button class="close-btn" onclick="closeCard()">Close Card ❤️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Code -->
+  <script>
+    function celebrate() {
+      // 1. Audio Play
+      var sound = document.getElementById("fireworksAudio");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(function(e) { console.log(e); });
+      }
+
+      // 2. Confetti Effect
+      confetti({ particleCount: 180, spread: 100, origin: { y: 0.6 } });
+
+      // 3. Floating Animations (Hearts & Teddy Bears)
+      spawnFloatingHearts();
+      spawnTeddies();
+
+      // 4. Open Card
+      document.getElementById("cardModal").style.display = "flex";
+    }
+
+    function closeCard() {
+      document.getElementById("cardModal").style.display = "none";
+    }
+
+    function blowCandle() {
+      var flame = document.getElementById("candleFlame");
+      if (!flame.classList.contains("off")) {
+        flame.classList.add("off");
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
+        
+        var sound = document.getElementById("fireworksAudio");
+        if (sound) { sound.currentTime = 0; sound.play().catch(function(e){}); }
+        
+        spawnFloatingHearts();
+
+        setTimeout(function() {
+          alert("Happy Birthday Areesha! 🎂 Your wish is sent to the stars! ✨");
+        }, 300);
+      }
+    }
+
+    function quizAnswer(msg) {
+      var sound = document.getElementById("fireworksAudio");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(function(e) { console.log(e); });
+      }
+      
+      confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 } });
+      
+      // Floating Hearts
+      spawnFloatingHearts();
+
+      setTimeout(function() {
+        alert(msg);
+      }, 300);
+    }
+
+    function spawnTeddies() {
+      for (let i = 0; i < 6; i++) {
+        setTimeout(function() {
+          let teddy = document.createElement("div");
+          teddy.className = "teddy";
+          teddy.innerText = "🧸";
+          teddy.style.left = Math.random() * 85 + "vw";
+          document.body.appendChild(teddy);
+          setTimeout(() => teddy.remove(), 5000);
+        }, i * 500);
+      }
+    }
+
+    function spawnFloatingHearts() {
+      const heartIcons = ["❤️", "💖", "💕", "💗", "💓", "💘"];
+      for (let i = 0; i < 20; i++) {
+        setTimeout(function() {
+          let heart = document.createElement("div");
+          heart.className = "floating-heart";
+          heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+          heart.style.left = (Math.random() * 90) + "vw";
+          document.body.appendChild(heart);
+          
+          setTimeout(() => heart.remove(), 4000);
+        }, i * 150);
+      }
+    }
+  </script>
+
+</body>
+</html>

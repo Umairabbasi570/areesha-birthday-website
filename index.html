@@ -637,6 +637,139 @@
     });
   }
 </script>
+  <!-- Scratch Card Section -->
+<style>
+  .scratch-section-wrapper {
+    text-align: center;
+    margin: 40px auto;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .scratch-title {
+    color: #ff1493;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .scratch-container {
+    position: relative;
+    width: 300px;
+    height: 160px;
+    margin: 0 auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Hidden Surprise Message Behind */
+  .scratch-secret-message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    box-sizing: border-box;
+    color: #d81b60;
+    text-align: center;
+  }
+
+  .scratch-secret-message h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+  }
+
+  .scratch-secret-message p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  /* Scratch Canvas Overlay */
+  .scratch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    touch-action: none;
+  }
+</style>
+
+<div class="scratch-section-wrapper">
+  <div class="scratch-title">🎫 Scratch Below to Reveal Your Birthday Surprise! ✨</div>
+  
+  <div class="scratch-container">
+    <!-- Hidden Surprise -->
+    <div class="scratch-secret-message">
+      <h4>🎉 Surprise Birthday Wish! 💖</h4>
+      <p>"You are the most special person in my life! My biggest birthday wish is to always see you smiling and happy. Happy Birthday, Areesha! 🎁✨"</p>
+    </div>
+
+    <!-- Canvas Layer to Scratch -->
+    <canvas id="scratchCanvas" class="scratch-canvas" width="300" height="160"></canvas>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const canvas = document.getElementById('scratchCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    // Draw silver scratch surface
+    ctx.fillStyle = '#C0C0C0';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Add pattern text on top of scratch surface
+    ctx.fillStyle = '#808080';
+    ctx.font = 'bold 16px Poppins, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('✨ Scratch Here ✨', canvas.width / 2, canvas.height / 2 + 5);
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function scratch(e) {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const pos = getPos(e);
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, 18, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Mouse Events
+    canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+    canvas.addEventListener('mousemove', scratch);
+    canvas.addEventListener('mouseup', () => { isDrawing = false; });
+    canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+
+    // Touch Events for Mobile
+    canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+    canvas.addEventListener('touchmove', scratch);
+    canvas.addEventListener('touchend', () => { isDrawing = false; });
+  })();
+</script>
 <!-- Secret Gift Box Section -->
 <style>
   .gift-box-wrapper {

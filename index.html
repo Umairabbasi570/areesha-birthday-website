@@ -769,7 +769,146 @@
     canvas.addEventListener('touchmove', scratch);
     canvas.addEventListener('touchend', () => { isDrawing = false; });
   })();
+  <!-- Interactive Compliment Generator Section -->
+<style>
+  .compliment-section-wrapper {
+    text-align: center;
+    margin: 40px auto;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .compliment-title {
+    color: #ff1493;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .compliment-card {
+    background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
+    border: 2px solid #ff69b4;
+    border-radius: 20px;
+    padding: 25px 20px;
+    max-width: 320px;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.25);
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .compliment-text {
+    color: #d81b60;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .compliment-btn {
+    background: linear-gradient(45deg, #ff1493, #ff69b4);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .compliment-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 20, 147, 0.6);
+  }
+
+  /* Pop Animation for Card */
+  .pop-animation {
+    animation: popEffect 0.4s ease-out;
+  }
+
+  @keyframes popEffect {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Floating Emoji Effect */
+  .floating-emoji {
+    position: fixed;
+    font-size: 24px;
+    pointer-events: none;
+    animation: floatUp 1.5s ease-out forwards;
+    z-index: 9999;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+  }
+</style>
+
+<div class="compliment-section-wrapper">
+  <div class="compliment-title">💖 Roll a Sweet Birthday Wish for Areesha! 🎲</div>
+
+  <div class="compliment-card" id="complimentCard">
+    <p class="compliment-text" id="complimentText">Tap the button below to get a cute wish! ✨</p>
+  </div>
+
+  <button class="compliment-btn" onclick="generateCompliment(event)">🎲 Get a Cute Wish ✨</button>
+</div>
+
+<script>
+  const compliments = [
+    "Areesha, your smile has the power to light up the whole room! 🌟",
+    "May your birthday be as sweet, kind, and amazing as you are! 🎂💖",
+    "Stay blessed, stay happy, and keep shining always! ✨",
+    "You make every single day brighter just by being in it! 🌸",
+    "Wishing you endless laughter, joy, and success today and forever! 🎉",
+    "You deserve all the happiness in the entire world, Areesha! 🎁💖",
+    "Never stop being the awesome person you are! 👑✨",
+    "May all your biggest dreams and wishes come true this year! 🌈✨",
+    "Sending you infinite smiles and warm hugs on your birthday! 🤗💖",
+    "You are truly one of a kind and very special! 💐🎉"
+  ];
+
+  function generateCompliment(event) {
+    const card = document.getElementById('complimentCard');
+    const text = document.getElementById('complimentText');
+    
+    // Pick random wish
+    const randomIndex = Math.floor(Math.random() * compliments.length);
+    text.innerText = compliments[randomIndex];
+
+    // Trigger pop animation
+    card.classList.remove('pop-animation');
+    void card.offsetWidth; // Restart animation
+    card.classList.add('pop-animation');
+
+    // Create floating emojis on button click position
+    const emojis = ['💖', '✨', '🌸', '🎉', '🌟', '👑', '🎂'];
+    for (let i = 0; i < 5; i++) {
+      createEmoji(event.clientX + (Math.random() * 40 - 20), event.clientY + (Math.random() * 20 - 10), emojis[Math.floor(Math.random() * emojis.length)]);
+    }
+  }
+
+  function createEmoji(x, y, emojiSymbol) {
+    const emoji = document.createElement('div');
+    emoji.className = 'floating-emoji';
+    emoji.innerText = emojiSymbol;
+    emoji.style.left = x + 'px';
+    emoji.style.top = y + 'px';
+    document.body.appendChild(emoji);
+
+    setTimeout(() => {
+      emoji.remove();
+    }, 1500);
+  }
 </script>
+  
 <!-- Secret Gift Box Section -->
 <style>
   .gift-box-wrapper {
